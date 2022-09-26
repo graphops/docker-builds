@@ -1,8 +1,10 @@
 FROM golang:1.19-alpine
 
+ENV DOWNLOAD_MANAGER_REF="multipart"
+
 WORKDIR /go/src/gnosischain/download-manager
 RUN apk add --no-cache git && \
-    git clone https://github.com/gnosischain/download-manager --depth=1 . && \
+    git clone https://github.com/gnosischain/download-manager --depth=1 --branch=${DOWNLOAD_MANAGER_REF} . && \
     go get github.com/vbauerster/getparty && \
     CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -a -installsuffix cgo -o download-manager .
 
