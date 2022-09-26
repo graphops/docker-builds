@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         context:
-          - dockerfiles/init-toolkit
+          - init-toolkit
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -33,7 +33,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
-          context: ./${{ matrix.context }}
+          context: ./dockerfiles/${{ matrix.context }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
