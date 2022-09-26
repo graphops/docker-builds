@@ -7,7 +7,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  BASE_NAME: docker-builds
+  BASE_NAME: graphops/docker-builds
 
 jobs:
   build:
