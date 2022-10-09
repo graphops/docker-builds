@@ -1,6 +1,6 @@
 FROM golang:1.19-alpine
 
-ENV DOWNLOAD_MANAGER_REF="multipart"
+ENV DOWNLOAD_MANAGER_REF="main"
 
 WORKDIR /go/src/gnosischain/download-manager
 RUN apk add --no-cache git && \
@@ -10,5 +10,5 @@ RUN apk add --no-cache git && \
 
 FROM alpine:3.16
 WORKDIR /
-RUN apk add --no-cache curl
+RUN apk add --no-cache curl aria2
 COPY --from=0 /go/src/gnosischain/download-manager/download-manager /download-manager
