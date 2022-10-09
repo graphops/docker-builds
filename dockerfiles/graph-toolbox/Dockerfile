@@ -28,3 +28,5 @@ ADD ./inner-readme README
 COPY --from=graphman-source /usr/local/bin/graphman /usr/local/bin/graphman
 
 RUN alias graphman='graphman --config /graphman-config/config.toml'
+
+ENTRYPOINT [ "/bin/sleep", "infinity" ]
