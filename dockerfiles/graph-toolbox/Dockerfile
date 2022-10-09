@@ -18,7 +18,8 @@ RUN apt update && \
         postgresql-contrib \
         git \
         netcat \
-        net-tools
+        net-tools \
+        aria2
 
 WORKDIR /workspace
 
