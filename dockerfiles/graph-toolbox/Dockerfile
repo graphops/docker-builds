@@ -8,7 +8,7 @@ FROM ghcr.io/graphprotocol/indexer-cli:${INDEXER_VERSION} as runtime
 USER root
 
 RUN apt update && \
-    apt install \
+    apt install -y \
         nano \
         libpq5 \
         curl \
