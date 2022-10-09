@@ -24,8 +24,7 @@ RUN apt-get -q update \
     aria2
 
 RUN (curl -sL https://deb.nodesource.com/setup_16.x | bash -) && \
-    apt-get update -q && \
-    apt-get install -y nodejs npm && \
+    apt-get install -y nodejs && \
     npm install --global yarn && \
     yarn global add nan @graphprotocol/graph-cli @graphprotocol/indexer-cli@${INDEXER_VERSION}
 
