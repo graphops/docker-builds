@@ -18,16 +18,16 @@ RUN apt-get -q update \
     netcat \
     net-tools \
     wget \
-    build-essential \
+    gcc g++ make \
     postgresql \
     postgresql-contrib \
     aria2
 
-RUN npm cache clean -f && \
-    npm install -g n && \
-    n stable
-
-RUN yarn global add nan @graphprotocol/graph-cli @graphprotocol/indexer-cli@${INDEXER_VERSION}
+RUN (curl -sL https://deb.nodesource.com/setup_16.x | bash -) && \
+    apt-get update -q && \
+    apt-get install -y nodejs npm && \
+    npm install --global yarn && \
+    yarn global add nan @graphprotocol/graph-cli @graphprotocol/indexer-cli@${INDEXER_VERSION}
 
 WORKDIR /workspace
 
