@@ -3,23 +3,23 @@ ARG INDEXER_VERSION="v0.20.3"
 
 FROM graphprotocol/graph-node:${GRAPH_NODE_VERSION} as graphman-source
 
-FROM ghcr.io/graphprotocol/indexer-cli:${INDEXER_VERSION} as runtime
+FROM node:16-alpine3.16 as runtime
 
-USER root
-
-RUN apt update && \
-    apt install -y \
+RUN apk add --no-cache \
         nano \
-        libpq5 \
         curl \
         wget \
         httpie \
         postgresql \
-        postgresql-contrib \
         git \
-        netcat \
         net-tools \
         aria2
+
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
+RUN source "$HOME/.cargo/env" && \
+    yarn global add @graphprotocol/graph-cli && \
+    yarn global add @graphprotocol/indexer-cli@${INDEXER_VERSION}
 
 WORKDIR /workspace
 
