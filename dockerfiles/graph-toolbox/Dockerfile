@@ -1,4 +1,4 @@
-ARG GRAPH_NODE_VERSION="v0.27.0"
+ARG GRAPH_NODE_VERSION="v0.28.0"
 ARG INDEXER_VERSION="v0.20.3"
 
 FROM graphprotocol/graph-node:${GRAPH_NODE_VERSION} as graphman-source
