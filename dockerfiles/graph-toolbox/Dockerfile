@@ -21,7 +21,8 @@ RUN apt-get -q update \
     gcc g++ make \
     postgresql \
     postgresql-contrib \
-    aria2
+    aria2 \
+    dumb-init
 
 RUN (curl -sL https://deb.nodesource.com/setup_16.x | bash -) && \
     apt-get install -y nodejs && \
@@ -34,4 +35,5 @@ ADD ./inner-readme README
 
 COPY --from=graphman-source /usr/local/bin/graphman /usr/local/bin/graphman
 
-ENTRYPOINT ["/bin/sleep", "infinity"]
+ENTRYPOINT ["/usr/bin/dumb-init", "--"]
+CMD ["bash", "-c", "/bin/sleep infinity"]
