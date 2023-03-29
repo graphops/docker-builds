@@ -1,0 +1,15 @@
+# Temporalite Image
+
+The Temporalite Image is a pre-configured environment for running the [Temporalite](https://github.com/temporalio/temporalite) server. Temporalite is a distribution of [Temporal](https://temporal.io) that runs as a single process with zero runtime dependencies.
+
+
+## How to use
+
+To use the Temporalite image, simply pull it from `ghcr.io/graphops/temporalite` and run it as a Docker container. You can customize the environment by specifying options such as a configuration file, mapping a volume to persist data, or exposing ports to connect to the Temporal server.
+
+## Benefits
+
+- Quick and easy setup of a Temporal environment
+- Consistent and reproducible environment across different stages of development
+- Focus on building and running Temporal workflows without worrying about setting up the environment
+- Persistence to disk and an in-memory mode are both supported via SQLite.
