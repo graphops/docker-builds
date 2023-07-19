@@ -1,5 +1,9 @@
+# renovate: datasource=docker depName=graphprotocol/graph-node versioning=semver
 ARG GRAPH_NODE_VERSION="v0.28.2"
+# renovate: datasource=npm depName=@graphprotocol/indexer-cli versioning=semver
 ARG INDEXER_VERSION="v0.20.4"
+# renovate: datasource=npm depName=@graphprotocol/graph-cli versioning=semver
+ARG GRAPH_CLI_VERSION="v0.20.4"
 
 FROM graphprotocol/graph-node:${GRAPH_NODE_VERSION} as graphman-source
 
@@ -24,10 +28,10 @@ RUN apt-get -q update \
     aria2 \
     dumb-init
 
-RUN (curl -sL https://deb.nodesource.com/setup_16.x | bash -) && \
+RUN (curl -sL https://deb.nodesource.com/setup_20.x | bash -) && \
     apt-get install -y nodejs && \
     npm install --global yarn && \
-    yarn global add nan @graphprotocol/graph-cli @graphprotocol/indexer-cli@${INDEXER_VERSION}
+    yarn global add nan @graphprotocol/graph-cli@${GRAPH_CLI_VERSION} @graphprotocol/indexer-cli@${INDEXER_VERSION}
 
 WORKDIR /workspace
 
