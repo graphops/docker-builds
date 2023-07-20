@@ -28,7 +28,7 @@ RUN apt-get -q update \
     aria2 \
     dumb-init
 
-RUN (curl -sL https://deb.nodesource.com/setup_20.x | bash -) && \
+RUN (curl -sL https://deb.nodesource.com/setup_18.x | bash -) && \
     apt-get install -y nodejs && \
     npm install --global yarn && \
     yarn global add nan @graphprotocol/graph-cli@${GRAPH_CLI_VERSION} @graphprotocol/indexer-cli@${INDEXER_VERSION}
