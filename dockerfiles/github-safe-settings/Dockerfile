@@ -1,8 +1,7 @@
-# renovate: datasource=github-releases depName=github/safe-settings versioning=semver
-ARG SAFE_SETTINGS_VERSION="2.0.24-rc.4"
-
 FROM node:lts-alpine3.17
 
+# renovate: datasource=github-releases depName=github/safe-settings versioning=semver
+ARG SAFE_SETTINGS_VERSION="2.0.24-rc.4"
 ENV SAFE_SETTINGS_VERSION=${SAFE_SETTINGS_VERSION}
 
 RUN apk add --no-cache \
