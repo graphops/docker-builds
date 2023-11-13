@@ -2,6 +2,11 @@
 
 set -ex -o pipefail
 
+if [[ "${RESTORE_SNAPSHOT,,:-"false"}" = "true" ]]; then
+  echo "Skipping snapshot restore"
+  exit 0
+fi
+
 if [[ -z "$URL" ]]; then
   echo "No URL to download set"
   exit 1
@@ -14,6 +19,7 @@ fi
 
 TAR_ARGS=${TAR_ARGS-""}
 SUBPATH=${SUBPATH-""}
+RM_SUBPATH=${RM_SUBPATH,,:-"true"}
 
 CHUNK_SIZE=${CHUNK_SIZE:-$((1000 * 1000 * 1000))}
 
@@ -23,10 +29,14 @@ STAMP="${DIR}/._download.stamp"
 PIPE="${WORK_DIR}/stream_pipe"
 
 if [[ -f "${STAMP}" && "$(cat "${STAMP}")" = "${URL}"  ]]; then
-  echo "Already downloaded, exiting"
+  echo "Already restored, exiting"
   exit 0
 else
   echo "Preparing to download ${URL}"
+fi
+
+if [[ -d "${DIR}/${SUBPATH}" && "${RM_SUBPATH,,}" = "true" ]]; then
+  rm -rf "${DIR}/${SUBPATH}/.*"
 fi
 
 FILESIZE="$(curl -sI "$URL" | grep -i Content-Length | awk '{print $2}' | tr -dc '[:alnum:]' )"
