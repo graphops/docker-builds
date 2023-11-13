@@ -22,6 +22,7 @@ jobs:
           - graph-toolbox
           - temporalite
           - github-safe-settings
+          - init-stream-download
     steps:
       - name: Checkout
         uses: actions/checkout@v3
