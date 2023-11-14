@@ -77,7 +77,7 @@ function watchStream {
     if [ "$processedPart" -eq "$NR_PARTS" ]; then
       processedLastPart="true"
       exec 4>&-
-      kill --signal USR1 $$
+      kill -s USR1 $$
     fi
   done
 }
