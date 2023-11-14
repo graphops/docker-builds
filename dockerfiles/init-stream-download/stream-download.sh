@@ -2,7 +2,6 @@
 
 set -ex -o pipefail
 
-
 RESTORE_SNAPSHOT=${RESTORE_SNAPSHOT:-"false"}
 RESTORE_SNAPSHOT=${RESTORE_SNAPSHOT,,}
 
@@ -45,7 +44,7 @@ if [[ -d "${DIR}/${SUBPATH}" && "${RM_SUBPATH}" = "true" ]]; then
   rm -rf "${DIR}/${SUBPATH}/.*"
 fi
 
-FILESIZE="$(curl -sI "$URL" | grep -i Content-Length | awk '{print $2}' | tr -dc '[:alnum:]' )"
+FILESIZE="$(curl --silent --head "$URL" | grep --ignore-case Content-Length | awk '{print $2}' | tr --delete --complement '[:alnum:]' )"
 
 NR_PARTS=$((FILESIZE / CHUNK_SIZE))
 if ((FILESIZE % CHUNK_SIZE > 0)); then
@@ -74,11 +73,11 @@ function watchStream {
   do
     read filename
     processChunk "$filename"
-    processedPart="$(echo "$filename" | cut -d '.' -f 3)"
+    processedPart="$(echo "$filename" | cut --delimiter '.' --fields 3)"
     if [ "$processedPart" -eq "$NR_PARTS" ]; then
       processedLastPart="true"
       exec 4>&-
-      kill --signal SIGUSR1 $$
+      kill --signal USR1 $$
     fi
   done
 }
@@ -86,7 +85,7 @@ function watchStream {
 function download {
   local startPos=0
   local partNr=0
-  local partPath=$(mktemp -p "${WORK_DIR}" "snapshot-download-XXXXXXXXXXXXX.part")
+  local partPath=$(mktemp --tmpdir "${WORK_DIR}" "snapshot-download-XXXXXXXXXXXXX.part")
   local finishedDownload="false"
 
   until [[ "$finishedDownload" = "true" ]];
@@ -96,7 +95,7 @@ function download {
       finishedDownload="true"
     fi
     set -e
-    local downloadedSize="$(stat -c%s "$partPath")"
+    local downloadedSize="$(stat --format %s "$partPath")"
     if [[ "$finishedDownload" = "true" || $(( downloadedSize == CHUNK_SIZE )) ]]; then
       partNr=$(( startPos / CHUNK_SIZE + 1))
       mv "$partPath" "$CHUNKS_DIR/snapshot-download.part.$partNr" > /dev/null
