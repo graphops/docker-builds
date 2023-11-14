@@ -44,7 +44,7 @@ if [[ -d "${DIR}/${SUBPATH}" && "${RM_SUBPATH}" = "true" ]]; then
   rm -rf "${DIR}/${SUBPATH}/.*"
 fi
 
-FILESIZE="$(curl --silent --head "$URL" | grep --ignore-case Content-Length | awk '{print $2}' | tr --delete --complement '[:alnum:]' )"
+FILESIZE="$(curl --silent --head "$URL" | grep -i Content-Length | awk '{print $2}' | tr --delete --complement '[:alnum:]' )"
 
 NR_PARTS=$((FILESIZE / CHUNK_SIZE))
 if ((FILESIZE % CHUNK_SIZE > 0)); then
@@ -85,7 +85,7 @@ function watchStream {
 function download {
   local startPos=0
   local partNr=0
-  local partPath=$(mktemp --tmpdir "${WORK_DIR}" "snapshot-download-XXXXXXXXXXXXX.part")
+  local partPath=$(mktemp --tmpdir="${WORK_DIR}" "snapshot-download-XXXXXXXXXXXXX.part")
   local finishedDownload="false"
 
   until [[ "$finishedDownload" = "true" ]];
@@ -132,7 +132,7 @@ if [[ ! -d "${DIR}/${SUBPATH}" ]]; then
   mkdir -p "${DIR}/${SUBPATH}"
 fi
 
-cat <&5 | pv --size "$FILESIZE" --progress --eta --timer | tar --verbose --extract --file - --directory "${DIR}/${SUBPATH}" ${TAR_ARGS} &
+cat <&5 | pv --force --size "$(( FILESIZE / 30 ))" --progress --eta --timer | tar --verbose --extract --file - --directory "${DIR}/${SUBPATH}" ${TAR_ARGS} &
 cat_pid=$!
 
 wait
