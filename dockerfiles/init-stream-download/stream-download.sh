@@ -2,7 +2,11 @@
 
 set -ex -o pipefail
 
-if [[ "${RESTORE_SNAPSHOT,,:-"false"}" = "true" ]]; then
+
+RESTORE_SNAPSHOT=${RESTORE_SNAPSHOT:-"false"}
+RESTORE_SNAPSHOT=${RESTORE_SNAPSHOT,,}
+
+if [[ "${RESTORE_SNAPSHOT}" = "false" ]]; then
   echo "Skipping snapshot restore"
   exit 0
 fi
@@ -19,7 +23,9 @@ fi
 
 TAR_ARGS=${TAR_ARGS-""}
 SUBPATH=${SUBPATH-""}
-RM_SUBPATH=${RM_SUBPATH,,:-"true"}
+
+RM_SUBPATH=${RM_SUBPATH:-"true"}
+RM_SUBPATH=${RM_SUBPATH,,}
 
 CHUNK_SIZE=${CHUNK_SIZE:-$((1000 * 1000 * 1000))}
 
@@ -35,7 +41,7 @@ else
   echo "Preparing to download ${URL}"
 fi
 
-if [[ -d "${DIR}/${SUBPATH}" && "${RM_SUBPATH,,}" = "true" ]]; then
+if [[ -d "${DIR}/${SUBPATH}" && "${RM_SUBPATH}" = "true" ]]; then
   rm -rf "${DIR}/${SUBPATH}/.*"
 fi
 
