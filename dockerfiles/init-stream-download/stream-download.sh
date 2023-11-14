@@ -2,7 +2,6 @@
 
 set -ex -o pipefail
 
-
 RESTORE_SNAPSHOT=${RESTORE_SNAPSHOT:-"false"}
 RESTORE_SNAPSHOT=${RESTORE_SNAPSHOT,,}
 
@@ -78,7 +77,7 @@ function watchStream {
     if [ "$processedPart" -eq "$NR_PARTS" ]; then
       processedLastPart="true"
       exec 4>&-
-      kill --signal SIGUSR1 $$
+      kill --signal USR1 $$
     fi
   done
 }
