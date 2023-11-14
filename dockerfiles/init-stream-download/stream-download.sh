@@ -6,7 +6,7 @@ set -ex -o pipefail
 RESTORE_SNAPSHOT=${RESTORE_SNAPSHOT:-"false"}
 RESTORE_SNAPSHOT=${RESTORE_SNAPSHOT,,}
 
-if [[ "${RESTORE_SNAPSHOT}" = "true" ]]; then
+if [[ "${RESTORE_SNAPSHOT}" = "false" ]]; then
   echo "Skipping snapshot restore"
   exit 0
 fi
