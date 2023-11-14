@@ -132,7 +132,7 @@ if [[ ! -d "${DIR}/${SUBPATH}" ]]; then
   mkdir -p "${DIR}/${SUBPATH}"
 fi
 
-cat <&5 | pv --force --size "$(( FILESIZE / 30 ))" --progress --eta --timer | tar --verbose --extract --file - --directory "${DIR}/${SUBPATH}" ${TAR_ARGS} &
+cat <&5 | pv --force --size "$FILESIZE" --progress --eta --timer | tar --verbose --extract --file - --directory "${DIR}/${SUBPATH}" ${TAR_ARGS} &
 cat_pid=$!
 
 wait
