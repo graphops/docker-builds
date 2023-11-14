@@ -2,6 +2,7 @@
 
 set -ex -o pipefail
 
+
 RESTORE_SNAPSHOT=${RESTORE_SNAPSHOT:-"false"}
 RESTORE_SNAPSHOT=${RESTORE_SNAPSHOT,,}
 
