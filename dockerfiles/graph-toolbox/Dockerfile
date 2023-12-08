@@ -7,7 +7,7 @@ ARG GRAPH_CLI_VERSION="0.62.0"
 
 FROM graphprotocol/graph-node:${GRAPH_NODE_VERSION} as graphman-source
 
-FROM rust:1@sha256:6de6071df133f8be44dd4538c74e93590941c6d2b9c98853e05011714fbcf57d as runtime
+FROM rust:1@sha256:32d220ca8c77fe56afd6d057c382ea39aced503278526a34fc62b90946f92e02 as runtime
 
 ENV DEBIAN_FRONTEND=noninteractive
 ARG NODE_MAJOR=18
