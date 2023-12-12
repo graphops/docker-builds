@@ -2,7 +2,8 @@ Welcome to your Graph Indexer Toolbox container!
 
 In here the following tools are preconfigured:
 - `graphman`
-- `graph indexer`
+- `graph`
+- `graph-indexer indexer`
 - `psql`
 
 Do not rely on state persistence in this container. Ensure that any important scripts or configs are defined externally.
