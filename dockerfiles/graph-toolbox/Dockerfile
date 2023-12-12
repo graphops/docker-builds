@@ -5,12 +5,45 @@ ARG INDEXER_VERSION="0.20.23"
 # renovate: datasource=npm depName=@graphprotocol/graph-cli versioning=semver
 ARG GRAPH_CLI_VERSION="0.63.1"
 
-FROM graphprotocol/graph-node:${GRAPH_NODE_VERSION} as graphman-source
+ARG TARGET="x86_64-unknown-linux-gnu"
 
-FROM rust:1-slim-bullseye@sha256:7c58e9fea791e63967d35375dc93f8e93bdaaf53e5f55862984bcf16bfe68fd7 as runtime
+ARG NODE_MAJOR=18
+
+FROM rust:1-bookworm@sha256:6df01b907d5664cc3d4ad56c111b9d31bf8bf3ea6fb0ff7fa348e140ae54970d as graphman-build
+
+ARG GRAPH_NODE_VERSION
+ARG TARGET
+
+RUN apt-get -q update \
+  && apt-get -q -y install \
+    git \
+    cmake \
+    protobuf-compiler \
+    pkg-config \
+    libssl-dev \
+    libpq-dev \
+    ca-certificates
+
+RUN mkdir /src
+
+WORKDIR /src
+
+RUN git clone https://github.com/graphprotocol/graph-node.git
+
+WORKDIR /src/graph-node
+
+RUN git checkout $(echo ${GRAPH_NODE_VERSION} | cut -d '@' -f 1)
+
+RUN cargo build --bin graphman --release --target ${TARGET}
+
+FROM rust:1-slim-bookworm@sha256:ad32f124093413dbeee63787b4275ee5ede1374cb837ffae818ec28566510d1b as runtime
+
+ARG INDEXER_VERSION
+ARG GRAPH_CLI_VERSION
+ARG NODE_MAJOR
+ARG TARGET
 
 ENV DEBIAN_FRONTEND=noninteractive
-ARG NODE_MAJOR=18
 ENV NODE_MAJOR=${NODE_MAJOR}
 
 RUN apt-get -q update \
@@ -45,7 +78,7 @@ WORKDIR /workspace
 
 ADD ./inner-readme README
 
-COPY --from=graphman-source /usr/local/bin/graphman /usr/local/bin/graphman
+COPY --from=graphman-build /src/graph-node/target/${TARGET}/release/graphman /usr/local/bin/graphman
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 CMD ["bash", "-c", "/bin/sleep infinity"]
