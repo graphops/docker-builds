@@ -72,7 +72,7 @@ RUN mkdir -p /etc/apt/keyrings && \
     apt-get install nodejs -y
 
 RUN npm install --global yarn && \
-    yarn global add @graphprotocol/graph-cli@${GRAPH_CLI_VERSION} @graphprotocol/indexer-cli@${INDEXER_VERSION}
+    yarn global add nan @graphprotocol/graph-cli@${GRAPH_CLI_VERSION} @graphprotocol/indexer-cli@${INDEXER_VERSION}
 
 WORKDIR /workspace
 
