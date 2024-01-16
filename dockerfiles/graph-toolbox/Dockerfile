@@ -9,7 +9,7 @@ ARG TARGET="x86_64-unknown-linux-gnu"
 
 ARG NODE_MAJOR=18
 
-FROM rust:1-bookworm@sha256:c09b1bb91bdc5b44a2f761333c13f9a0f56ef8a677391be117e749be0b7427e8 as graphman-build
+FROM rust:1-bookworm@sha256:b168e2c123b6f458a8f8a5e3f213dba012fa18a3d1011e270ba31b5ec6c6ec6d as graphman-build
 
 ARG GRAPH_NODE_VERSION
 ARG TARGET
@@ -36,7 +36,7 @@ RUN git checkout $(echo ${GRAPH_NODE_VERSION} | cut -d '@' -f 1)
 
 RUN cargo build --bin graphman --release --target ${TARGET}
 
-FROM rust:1-slim-bookworm@sha256:bf98eb97cecedbafb122fdae81b2238c18af1fae2d2b42ef5d246221cdabe8b7 as runtime
+FROM rust:1-slim-bookworm@sha256:ddc798fb9b7f0c284d95713bacddbb45d991d36a5946ff2f2a15f6ae09e6380b as runtime
 
 ARG INDEXER_VERSION
 ARG GRAPH_CLI_VERSION
