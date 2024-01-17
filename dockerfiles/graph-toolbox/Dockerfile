@@ -9,7 +9,7 @@ ARG TARGET="x86_64-unknown-linux-gnu"
 
 ARG NODE_MAJOR=18
 
-FROM rust:1-bookworm@sha256:184a309dd3e5519234d6d6dc196c4a0354dccdfb0b40cb3b8197210a2402ca14 as graphman-build
+FROM rust:1-bookworm@sha256:755b46a632bc0c1b95aa8a8babfca92c3f8f91e041d3095132b5f5c8ec99bd22 as graphman-build
 
 ARG GRAPH_NODE_VERSION
 ARG TARGET
