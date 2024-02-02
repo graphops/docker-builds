@@ -36,7 +36,7 @@ RUN git checkout $(echo ${GRAPH_NODE_VERSION} | cut -d '@' -f 1)
 
 RUN cargo build --bin graphman --release --target ${TARGET}
 
-FROM rust:1-slim-bookworm@sha256:ed03fabc7fbac3614f4d454d34720523f00e57fad2285ad655e16c1ecc751828 as runtime
+FROM rust:1-slim-bookworm@sha256:7d5067ff6a8933ee802e9e2ac845b271aabaf8d0911738e8adfed24d9a706c43 as runtime
 
 ARG INDEXER_VERSION
 ARG GRAPH_CLI_VERSION
