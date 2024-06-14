@@ -1,4 +1,4 @@
-FROM golang:1.22-alpine@sha256:9bdd5692d39acc3f8d0ea6f81327f87ac6b473dd29a2b6006df362bff48dd1f8
+FROM golang:1.22-alpine@sha256:d60e66b526e441eefd9796a0ca9eeb726ac857704181638ae09dfb7766b475a3
 
 ENV DOWNLOAD_MANAGER_REF="main"
 
