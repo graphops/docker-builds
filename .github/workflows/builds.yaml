@@ -23,6 +23,7 @@ jobs:
           - temporalite
           - github-safe-settings
           - init-stream-download
+          - netbox
     steps:
       - name: Checkout
         uses: actions/checkout@v3
