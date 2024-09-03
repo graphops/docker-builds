@@ -1,4 +1,4 @@
-FROM netboxcommunity/netbox:v4.0.10@sha256:835331ba44a6262c53ca10aaa48250a120280dc1b554182f53578f2fc1f264dd
+FROM netboxcommunity/netbox:v4.0.11@sha256:619f123f65cb747dd5acac56283506ca9a82107bac27475fa7176e432e403877
 
 RUN echo "netbox_attachments" >> /opt/netbox/plugin_requirements.txt
 
