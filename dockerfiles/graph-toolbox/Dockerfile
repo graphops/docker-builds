@@ -1,5 +1,5 @@
 # renovate: datasource=docker depName=graphprotocol/graph-node versioning=semver
-ARG GRAPH_NODE_VERSION="v0.33.0"
+ARG GRAPH_NODE_VERSION="v0.36.0"
 # renovate: datasource=npm depName=@graphprotocol/indexer-cli versioning=semver
 ARG INDEXER_VERSION="0.21.9"
 # renovate: datasource=npm depName=@graphprotocol/graph-cli versioning=semver
