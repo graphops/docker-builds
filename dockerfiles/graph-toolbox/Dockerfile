@@ -3,13 +3,13 @@ ARG GRAPH_NODE_VERSION="v0.36.0"
 # renovate: datasource=npm depName=@graphprotocol/indexer-cli versioning=semver
 ARG INDEXER_VERSION="0.21.9"
 # renovate: datasource=npm depName=@graphprotocol/graph-cli versioning=semver
-ARG GRAPH_CLI_VERSION="0.90.1"
+ARG GRAPH_CLI_VERSION="0.91.1"
 
 ARG TARGET="x86_64-unknown-linux-gnu"
 
 ARG NODE_MAJOR=18
 
-FROM rust:1-bookworm@sha256:b1dfd215521dd0156fbb256bea796719e049f88ae85ec909a100ce784d5203fa as graphman-build
+FROM rust:1-bookworm@sha256:39a313498ed0d74ccc01efb98ec5957462ac5a43d0ef73a6878f745b45ebfd2c as graphman-build
 
 ARG GRAPH_NODE_VERSION
 ARG TARGET
