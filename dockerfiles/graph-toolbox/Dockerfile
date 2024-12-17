@@ -3,7 +3,7 @@ ARG GRAPH_NODE_VERSION="v0.36.0"
 # renovate: datasource=npm depName=@graphprotocol/indexer-cli versioning=semver
 ARG INDEXER_VERSION="0.21.11"
 # renovate: datasource=npm depName=@graphprotocol/graph-cli versioning=semver
-ARG GRAPH_CLI_VERSION="0.91.1"
+ARG GRAPH_CLI_VERSION="0.92.0"
 
 ARG TARGET="x86_64-unknown-linux-gnu"
 
