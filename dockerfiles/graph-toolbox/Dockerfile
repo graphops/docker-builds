@@ -7,7 +7,7 @@ ARG GRAPH_CLI_VERSION="0.93.0"
 
 ARG TARGET="x86_64-unknown-linux-gnu"
 
-ARG NODE_MAJOR=18
+ARG NODE_MAJOR=22
 
 FROM rust:1-bookworm@sha256:39a313498ed0d74ccc01efb98ec5957462ac5a43d0ef73a6878f745b45ebfd2c as graphman-build
 
