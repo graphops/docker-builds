@@ -5,6 +5,7 @@ RUN apk add --no-cache \
   bash \
   pv \
   wget \
+  lz4 \
   tar \
   curl \
   inotify-tools \
