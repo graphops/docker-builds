@@ -1,15 +1,15 @@
 # renovate: datasource=docker depName=graphprotocol/graph-node versioning=semver
 ARG GRAPH_NODE_VERSION="v0.36.0"
 # renovate: datasource=npm depName=@graphprotocol/indexer-cli versioning=semver
-ARG INDEXER_VERSION="0.21.11"
+ARG INDEXER_VERSION="0.22.0"
 # renovate: datasource=npm depName=@graphprotocol/graph-cli versioning=semver
-ARG GRAPH_CLI_VERSION="0.94.0"
+ARG GRAPH_CLI_VERSION="0.95.0"
 
 ARG TARGET="x86_64-unknown-linux-gnu"
 
 ARG NODE_MAJOR=22
 
-FROM rust:1-bookworm@sha256:f9ca146cb48a9074fc329cb4172c9bc27c4e1cefe1ab8e3ee91952c4a5aaa9bc as graphman-build
+FROM rust:1-bookworm@sha256:e6e40c05cfe7dd55ad13794333d31b6d0818f0c6086876e7dc65871e6c8c0b21 as graphman-build
 
 ARG GRAPH_NODE_VERSION
 ARG TARGET
