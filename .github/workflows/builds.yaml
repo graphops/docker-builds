@@ -1,57 +1,109 @@
-name: build
+name: Docker Builds
 
 on:
   push:
     branches:
       - main
     tags:
-      - '*'
-  workflow_dispatch: # allow manual dispatch
+      - 'v*'
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
 
 env:
   REGISTRY: ghcr.io
   BASE_NAME: graphops/docker-builds
+  DOCKER_BUILDKIT: 1
+  BUILDX_NO_DEFAULT_LOAD: 1
 
 jobs:
-  build:
+  docker:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
     strategy:
       matrix:
         context:
           - init-toolbox
           - graph-toolbox
           - temporalite
-          - github-safe-settings
+          - altair
+      fail-fast: false
+
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Log in to the Container registry
-        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        uses: actions/checkout@v4
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
-      - uses: dorny/paths-filter@v2
+      - name: Make version extractor executable
+        run: chmod +x ./scripts/extract-versions.sh
+
+      - name: Extract versions from Dockerfile
+        id: versions
+        run: |
+          versions=$(./scripts/extract-versions.sh "./dockerfiles/${{ matrix.context }}/Dockerfile")
+          echo "versions=$versions" >> $GITHUB_OUTPUT
+          # Create a hyphen-separated version string for tagging
+          version_string=$(echo "$versions" | jq -r 'to_entries | map(.value) | join("-")')
+          echo "version_string=$version_string" >> $GITHUB_OUTPUT
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.BASE_NAME }}/${{ matrix.context }}
+          tags: |
+            # Version-based tag from concatenated versions
+            type=raw,value=${{ steps.versions.outputs.version_string }}
+            # Git-based tags
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=sha,prefix={{branch}}-,enable=${{ github.event_name == 'pull_request' }}
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+            type=ref,event=branch
+          labels: |
+            org.opencontainers.image.title=${{ matrix.context }}
+            org.opencontainers.image.description=Docker image for ${{ matrix.context }}
+            org.opencontainers.image.vendor=GraphOps
+            org.opencontainers.image.versions=${{ steps.versions.outputs.versions }}
+
+      - name: Check if context changed
+        uses: dorny/paths-filter@v2
         id: changes
         with:
           filters: |
             src:
               - 'dockerfiles/${{ matrix.context }}/**'
+              - '.github/workflows/builds.yaml'
+              - 'scripts/extract-versions.sh'
 
-      - if: steps.changes.outputs.src == 'true'
-        name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v4
+      - name: Login to GitHub Container Registry
+        if: steps.changes.outputs.src == 'true' && github.event_name != 'pull_request'
+        uses: docker/login-action@v3
         with:
-          images: ${{ env.REGISTRY }}/${{ env.BASE_NAME }}/${{ matrix.context }}
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - if: steps.changes.outputs.src == 'true'
-        name: Build and push
-        uses: docker/build-push-action@v2
+      - name: Build and push
+        if: steps.changes.outputs.src == 'true'
+        uses: docker/build-push-action@v5
         with:
           context: ./dockerfiles/${{ matrix.context }}
-          push: true
+          platforms: linux/amd64
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            ${{ steps.versions.outputs.versions }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          provenance: false

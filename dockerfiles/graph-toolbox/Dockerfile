@@ -1,13 +1,18 @@
-# renovate: datasource=docker depName=graphprotocol/graph-node versioning=semver
-ARG GRAPH_NODE_VERSION="v0.32.0@sha256:787665b2e82c915e407f9eb14ea59c78d840d05bf186a20d6e32a8a4b0b7a8c5"
-# renovate: datasource=npm depName=@graphprotocol/indexer-cli versioning=semver
-ARG INDEXER_VERSION="0.20.22"
-# renovate: datasource=npm depName=@graphprotocol/graph-cli versioning=semver
+# Each image should declare its component versions as build args at the top
+# Format: {COMPONENT}_VERSION="x.y.z" with standardized renovate comments
+
+# renovate: datasource=docker depName=rust
+ARG RUST_VERSION="1"
+# renovate: datasource=docker depName=graphprotocol/graph-node
+ARG GRAPH_NODE_VERSION="0.32.0"
+# renovate: datasource=npm depName=@graphprotocol/indexer-cli
+ARG INDEXER_CLI_VERSION="0.20.22"
+# renovate: datasource=npm depName=@graphprotocol/graph-cli
 ARG GRAPH_CLI_VERSION="0.58.0"
 
 FROM graphprotocol/graph-node:${GRAPH_NODE_VERSION} as graphman-source
 
-FROM rust:1@sha256:8a4ca3ca75afbc97bcf5362e9a694fe049d15734fbbaf82b8b7e224616c1254b as runtime
+FROM rust:${RUST_VERSION}@sha256:8a4ca3ca75afbc97bcf5362e9a694fe049d15734fbbaf82b8b7e224616c1254b as runtime
 
 ENV DEBIAN_FRONTEND=noninteractive
 ARG NODE_MAJOR=18
@@ -39,7 +44,7 @@ RUN mkdir -p /etc/apt/keyrings && \
     apt-get install nodejs -y
 
 RUN npm install --global yarn && \
-    yarn global add nan @graphprotocol/graph-cli@${GRAPH_CLI_VERSION} @graphprotocol/indexer-cli@${INDEXER_VERSION}
+    yarn global add nan @graphprotocol/graph-cli@${GRAPH_CLI_VERSION} @graphprotocol/indexer-cli@${INDEXER_CLI_VERSION}
 
 WORKDIR /workspace
 
