@@ -99,7 +99,7 @@ jobs:
 
       - name: Build and push
         if: steps.changes.outputs.src == 'true'
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: ./dockerfiles/${{ matrix.context }}
           platforms: linux/amd64
