@@ -43,16 +43,17 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Make version extractor executable
-        run: chmod +x ./scripts/extract-versions.sh
-
       - name: Extract versions from Dockerfile
         id: versions
         run: |
+          set -exo pipefail;
+          # Extract versions and store as JSON
           versions=$(./scripts/extract-versions.sh "./dockerfiles/${{ matrix.context }}/Dockerfile")
+          # Validate JSON and store
+          echo "$versions" | jq '.' > /dev/null # Validate JSON
           echo "versions=$versions" >> $GITHUB_OUTPUT
-          # Create a hyphen-separated version string for tagging
-          version_string=$(echo "$versions" | jq -r 'to_entries | map(.value) | join("-")')
+          # Create hyphen-separated version string, sorted by key for consistency
+          version_string=$(echo "$versions" | jq -r 'to_entries | sort_by(.key) | map(.value) | join("-")')
           echo "version_string=$version_string" >> $GITHUB_OUTPUT
 
       - name: Set up Docker Buildx
