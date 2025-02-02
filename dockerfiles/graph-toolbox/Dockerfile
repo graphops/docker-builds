@@ -1,8 +1,10 @@
-# renovate: datasource=docker depName=graphprotocol/graph-node versioning=semver
+# renovate: datasource=docker depName=rust
+ARG RUST_VERSION="1"
+# renovate: datasource=docker depName=graphprotocol/graph-node
 ARG GRAPH_NODE_VERSION="v0.36.1"
-# renovate: datasource=npm depName=@graphprotocol/indexer-cli versioning=semver
+# renovate: datasource=npm depName=@graphprotocol/indexer-cli
 ARG INDEXER_VERSION="0.22.0"
-# renovate: datasource=npm depName=@graphprotocol/graph-cli versioning=semver
+# renovate: datasource=npm depName=@graphprotocol/graph-cli
 ARG GRAPH_CLI_VERSION="0.95.0"
 
 ARG TARGET="x86_64-unknown-linux-gnu"
@@ -72,7 +74,7 @@ RUN mkdir -p /etc/apt/keyrings && \
     apt-get install nodejs -y
 
 RUN npm install --global yarn && \
-    yarn global add nan @graphprotocol/graph-cli@${GRAPH_CLI_VERSION} @graphprotocol/indexer-cli@${INDEXER_VERSION}
+    yarn global add nan @graphprotocol/graph-cli@${GRAPH_CLI_VERSION} @graphprotocol/indexer-cli@${INDEXER_CLI_VERSION}
 
 WORKDIR /workspace
 

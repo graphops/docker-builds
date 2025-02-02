@@ -1,7 +1,5 @@
 FROM golang:1.23-alpine@sha256:47d337594bd9e667d35514b241569f95fb6d95727c24b19468813d596d5ae596
 
-ENV DOWNLOAD_MANAGER_REF="main"
-
 WORKDIR {GOPATH:-/go}/src/temporalite
 RUN apk add --no-cache git && \
     git clone https://github.com/temporalio/temporalite.git && \
