@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-    tags:
-      - 'v*'
   pull_request:
     branches:
       - main
@@ -43,16 +41,17 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Make version extractor executable
-        run: chmod +x ./scripts/extract-versions.sh
-
       - name: Extract versions from Dockerfile
         id: versions
         run: |
+          set -exo pipefail;
+          # Extract versions and store as JSON
           versions=$(./scripts/extract-versions.sh "./dockerfiles/${{ matrix.context }}/Dockerfile")
+          # Validate JSON and store
+          echo "$versions" | jq '.' > /dev/null # Validate JSON
           echo "versions=$versions" >> $GITHUB_OUTPUT
-          # Create a hyphen-separated version string for tagging
-          version_string=$(echo "$versions" | jq -r 'to_entries | map(.value) | join("-")')
+          # Create hyphen-separated version string, sorted by key for consistency
+          version_string=$(echo "$versions" | jq -r 'to_entries | sort_by(.key) | map(.value) | join("-")')
           echo "version_string=$version_string" >> $GITHUB_OUTPUT
 
       - name: Set up Docker Buildx
@@ -65,12 +64,8 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.BASE_NAME }}/${{ matrix.context }}
           tags: |
             # Version-based tag from concatenated versions
+            type=sha
             type=raw,value=${{ steps.versions.outputs.version_string }}
-            # Git-based tags
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-            type=sha,prefix={{branch}}-,enable=${{ github.event_name == 'pull_request' }}
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
             type=ref,event=branch
           labels: |
@@ -106,8 +101,6 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            ${{ steps.versions.outputs.versions }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           provenance: false
