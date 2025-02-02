@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-    tags:
-      - 'v*'
   pull_request:
     branches:
       - main
@@ -66,8 +64,8 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.BASE_NAME }}/${{ matrix.context }}
           tags: |
             # Version-based tag from concatenated versions
+            type=sha
             type=raw,value=${{ steps.versions.outputs.version_string }}
-            type=sha,enable=${{ github.event_name == 'pull_request' }}
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
             type=ref,event=branch
           labels: |
