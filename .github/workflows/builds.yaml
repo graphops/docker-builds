@@ -75,7 +75,7 @@ jobs:
             org.opencontainers.image.versions=${{ steps.versions.outputs.versions }}
 
       - name: Check if context changed
-        uses: dorny/paths-filter@v2
+        uses: dorny/paths-filter@v3
         id: changes
         with:
           filters: |
