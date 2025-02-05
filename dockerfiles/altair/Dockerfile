@@ -33,14 +33,11 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
     pnpm install --frozen-lockfile
 
 RUN pnpm turbo run build --filter=@altairgraphql/api...
-RUN pnpm deploy --filter=@altairgraphql/api /api-app
+RUN pnpm deploy --filter=@altairgraphql/api /app
 
-# Final stage
-FROM node:${NODE_VERSION}-alpine AS final
 ENV NODE_ENV=production
 USER node
 
-COPY --from=base /api-app /app
 WORKDIR /app
 
 ENV NEW_RELIC_NO_CONFIG_FILE=true
