@@ -1,7 +1,7 @@
 # renovate: datasource=docker depName=netboxcommunity/netbox
 ARG NETBOX_VERSION="v4.2.4"
 
-FROM netboxcommunity/netbox:${NETBOX_VERSION}@sha256:06b882ea0a44c50f212e09babf9a411a759fb8b4c4a3085282bd5e8565b4334b
+FROM netboxcommunity/netbox:${NETBOX_VERSION}@sha256:319e0ee089c1236a37653ae2da40f24bb2508b39d5693daad75fd526d8e205a0
 
 COPY plugin_requirements.txt /opt/netbox/
 RUN /usr/local/bin/uv pip install -r /opt/netbox/plugin_requirements.txt
