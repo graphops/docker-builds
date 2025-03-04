@@ -26,6 +26,9 @@ RUN apt-get -q update \
     libpq-dev \
     ca-certificates
 
+# Ensure the Rust toolchain is installed for the target architecture
+RUN rustup target add ${TARGET} && rustup toolchain install stable-${TARGET}
+
 RUN mkdir /src
 
 WORKDIR /src
@@ -72,6 +75,9 @@ RUN mkdir -p /etc/apt/keyrings && \
     echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list && \
     apt-get update && \
     apt-get install nodejs -y
+
+# Ensure the Rust toolchain is installed for the target architecture
+RUN rustup target add ${TARGET} && rustup toolchain install stable-${TARGET}
 
 RUN npm install --global yarn && \
     yarn global add nan @graphprotocol/graph-cli@${GRAPH_CLI_VERSION} @graphprotocol/indexer-cli@${INDEXER_CLI_VERSION}
