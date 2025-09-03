@@ -1,4 +1,4 @@
-FROM golang:1.24-alpine@sha256:daae04ebad0c21149979cd8e9db38f565ecefd8547cf4a591240dc1972cf1399
+FROM golang:1.25-alpine@sha256:2ad042dec672e85d9e631feb0d2d72db86fd2a4e0cf8daaf2c19771a26df1062
 
 WORKDIR {GOPATH:-/go}/src/temporalite
 RUN apk add --no-cache git && \
