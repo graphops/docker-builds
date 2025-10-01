@@ -1,5 +1,5 @@
 # renovate: datasource=docker depName=netboxcommunity/netbox
-ARG NETBOX_VERSION="v4.4.1"
+ARG NETBOX_VERSION="v4.4.2"
 
 FROM netboxcommunity/netbox:${NETBOX_VERSION}
 
