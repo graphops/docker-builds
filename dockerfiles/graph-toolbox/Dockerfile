@@ -3,7 +3,7 @@ ARG RUST_VERSION="1"
 # renovate: datasource=docker depName=graphprotocol/graph-node
 ARG GRAPH_NODE_VERSION="v0.41.1"
 # renovate: datasource=npm depName=@graphprotocol/indexer-cli
-ARG INDEXER_VERSION="0.25.3"
+ARG INDEXER_VERSION="0.25.6"
 # renovate: datasource=npm depName=@graphprotocol/graph-cli
 ARG GRAPH_CLI_VERSION="0.98.1"
 
