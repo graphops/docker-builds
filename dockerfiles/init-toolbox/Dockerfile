@@ -1,4 +1,4 @@
-FROM golang:1.25-alpine@sha256:26111811bc967321e7b6f852e914d14bede324cd1accb7f81811929a6a57fea9
+FROM golang:1.26-alpine@sha256:7a3e50096189ad57c9f9f865e7e4aa8585ed1585248513dc5cda498e2f41812c
 
 ENV DOWNLOAD_MANAGER_REF="main"
 
@@ -8,7 +8,7 @@ RUN apk add --no-cache git && \
     go get github.com/vbauerster/getparty && \
     CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -a -installsuffix cgo -o download-manager .
 
-FROM alpine:3.23@sha256:51183f2cfa6320055da30872f211093f9ff1d3cf06f39a0bdb212314c5dc7375
+FROM alpine:3.24@sha256:a2d49ea686c2adfe3c992e47dc3b5e7fa6e6b5055609400dc2acaeb241c829f4
 WORKDIR /
 RUN apk add --no-cache curl aria2 jq kubectl
 COPY --from=0 /go/src/gnosischain/download-manager/download-manager /download-manager
