@@ -1,7 +1,7 @@
 # renovate: datasource=docker depName=rust
 ARG RUST_VERSION="1"
 # renovate: datasource=docker depName=graphprotocol/graph-node
-ARG GRAPH_NODE_VERSION="v0.44.0"
+ARG GRAPH_NODE_VERSION="v0.45.0"
 # renovate: datasource=npm depName=@graphprotocol/indexer-cli
 ARG INDEXER_VERSION="0.25.8"
 # renovate: datasource=npm depName=@graphprotocol/graph-cli
@@ -11,7 +11,7 @@ ARG TARGET="x86_64-unknown-linux-gnu"
 
 ARG NODE_MAJOR=22
 
-FROM rust:${RUST_VERSION}-bookworm@sha256:13c186980fa33cc12759b429662a1322939dbe697484b7c33b47dd2698d28460 as graphman-build
+FROM rust:${RUST_VERSION}-bookworm@sha256:593db038d36ea0d2e5b22a2e095eb95dbec607d88d658c2f35f65ee880b4f93a as graphman-build
 
 ARG GRAPH_NODE_VERSION
 ARG TARGET
@@ -41,7 +41,7 @@ RUN git checkout $(echo ${GRAPH_NODE_VERSION} | cut -d '@' -f 1)
 
 RUN cargo build --bin graphman --release --target ${TARGET}
 
-FROM rust:${RUST_VERSION}-slim-bookworm@sha256:b5f842fac1e3b4ff718a652a8e0173b62d9403ec826ef4998880b9347db30684 as runtime
+FROM rust:${RUST_VERSION}-slim-bookworm@sha256:158b745f1b82dbeec7ea06e6b1617d6b005723bb66e6141cd2ddfee40d079ec3 as runtime
 
 ARG INDEXER_VERSION
 ARG GRAPH_CLI_VERSION
