@@ -1,4 +1,4 @@
-FROM golang:1.25-alpine@sha256:26111811bc967321e7b6f852e914d14bede324cd1accb7f81811929a6a57fea9
+FROM golang:1.27-alpine@sha256:8a5910f31396cd4d89662f56c68b3ae31d374308270a1c3bd96672ee5ed43414
 
 WORKDIR {GOPATH:-/go}/src/temporalite
 RUN apk add --no-cache git && \
@@ -6,7 +6,7 @@ RUN apk add --no-cache git && \
     cd temporalite && \
     go build -o ${GOPATH:-/go}/bin/ ./cmd/temporalite
 
-FROM alpine:3.23@sha256:51183f2cfa6320055da30872f211093f9ff1d3cf06f39a0bdb212314c5dc7375
+FROM alpine:3.24@sha256:294b683cb724975bec92580e1e685676bd4b50bda910ddb8c51d4cabeaec77e6
 WORKDIR /
 
 COPY --from=0 ${GOPATH:-/go}/bin/temporalite /
