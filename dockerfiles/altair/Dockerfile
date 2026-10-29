@@ -2,12 +2,12 @@
 # Format: {COMPONENT}_VERSION="x.y.z" with standardized renovate comments
 
 # renovate: datasource=docker depName=node
-ARG NODE_VERSION="22.9.0"
+ARG NODE_VERSION="26.13.0"
 # renovate: datasource=git-refs depName=altair-graphql/altair
 ARG ALTAIR_VERSION="8.1.3"
 
 # First stage: Clone the Altair repository
-FROM alpine/git AS repo
+FROM alpine/git@sha256:e8ceedc73bd80992ae8d58a7d24c58b8322146c354f1d2e81a97db4452068ec0 AS repo
 WORKDIR /altair
 ARG ALTAIR_VERSION
 RUN git clone --depth 1 --branch v${ALTAIR_VERSION} https://github.com/altair-graphql/altair.git .
